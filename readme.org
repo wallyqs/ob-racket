@@ -1,0 +1,37 @@
+#+title: Org Babel support for Racket
+#+startup: showeverything
+
+Run Racket code blocks within Org mode buffers:
+
+#+BEGIN_SRC sh
+,#+BEGIN_SRC racket
+#lang racket
+
+(printf "Hello World")
+,#+END_SRC
+
+,#+RESULTS:
+: Hello World
+#+END_SRC
+
+**** Status
+
+Currently it only support grabbing the output via =:results output=.
+Tables and variable passing via =:var= not supported yet.
+
+**** Installation
+
+- Get Racket mode
+- Enable Racket code blocks execution and path to racket binary
+
+  #+BEGIN_SRC emacs-lisp
+(org-babel-do-load-languages
+      'org-babel-load-languages
+      '((racket . t)))
+
+(setq org-babel-racket-command "/usr/local/bin/racket")
+  #+END_SRC
+
+- Put =ob-racket.el= within the =contrib/lisp/= folder of your Org mode distribution
+
+- That should be it :)
