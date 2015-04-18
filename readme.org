@@ -1,5 +1,6 @@
 #+title: Org Babel support for Racket
 #+startup: showeverything
+#+options: todo:t
 
 Run Racket code blocks within Org mode buffers:
 
@@ -14,9 +15,31 @@ Run Racket code blocks within Org mode buffers:
 : Hello World
 #+END_SRC
 
-**** Status
+**** Features/Status
 
-Currently it only support grabbing the output via =:results output=.
+***** DONE ~:results output~
+
+Simplest case of running a code block is supported :)
+
+***** DONE ~:lang racket~
+
+It is possible to set the racket language to be used within the buffer
+by setting ~:lang~.  This can be useful to set the lang to be used
+throughout the same Org buffer by setting a global property:
+
+#+BEGIN_SRC sh
+,#+property: header-args :lang racket
+
+,#+BEGIN_SRC racket
+(printf "Hello world")
+,#+END_SRC
+
+,#+RESULTS:
+: Hello world
+#+END_SRC
+
+***** TODO ~:var params~
+
 Tables and variable passing via =:var= not supported yet.
 
 **** Installation
