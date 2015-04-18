@@ -1,0 +1,24 @@
+# -*- mode: org; mode: auto-fill -*-
+#+TITLE: features/improvements
+
+*** DONE Support automatic =#lang= insertion
+
+Most of the time ~#lang racket~ has to be inserted in the block. It
+would be convenient to have it be done in the background, and have
+this deactivated
+
+**** Default
+
+Default parameter is ~lang~:
+
+#+BEGIN_SRC racket :lang racket
+(printf "hello world")
+#+END_SRC
+
+**** Avoid affecting tangle
+
+For this, something like the following could be done.
+
+#+property: header-args :lang nil
+
+So that lang is not inserted and handled manually as usual.

@@ -26,6 +26,7 @@
 ;; is still not supported for example
 
 ;;; Code:
+
 (require 'ob)
 (eval-when-compile (require 'cl))
 
@@ -55,22 +56,24 @@
   "Execute a block of Racket code with Babel.
 This function is called by `org-babel-execute-src-block'."
   (let* ((result-params (cdr (assoc :result-params params)))
-         (result-type (cdr (assoc :result-type params)))
-	 (src-file (org-babel-temp-file "racket-"))
-	 (result (progn (with-temp-file src-file (insert body))
-		   (org-babel-eval
-		    (concat org-babel-racket-command " " src-file) "")
-		   )))
+         (result-type   (cdr (assoc :result-type params)))
+         (racket-lang   (cdr (assoc :lang params)))
+         (full-body (if (> (length racket-lang) 0)
+                        (concat "#lang " racket-lang "\n\n" body)
+                      body))
+         (src-file (org-babel-temp-file "racket-"))
+         (result (progn (with-temp-file src-file (insert full-body))
+                        (org-babel-eval
+                         (concat org-babel-racket-command " " src-file) ""))))
 
     (org-babel-reassemble-table
      (org-babel-result-cond result-params
        result
        (org-babel-racket-table-or-string result))
      (org-babel-pick-name (cdr (assoc :colname-names params))
-			  (cdr (assoc :colnames params)))
+                          (cdr (assoc :colnames params)))
      (org-babel-pick-name (cdr (assoc :rowname-names params))
-			  (cdr (assoc :rownames params))))))
-
+                          (cdr (assoc :rownames params))))))
 
 (defun org-babel-racket-table-or-string (results)
   "Convert RESULTS into an appropriate elisp value.
